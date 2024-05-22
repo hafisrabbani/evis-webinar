@@ -21,7 +21,7 @@ class MahasiswaController extends Controller
      */
     public function create()
     {
-
+        return view('mahasiswa.create');
     }
 
     /**
@@ -30,13 +30,13 @@ class MahasiswaController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'nim' => 'required|size:10|unique:mahasiswas,nim',
+            'nim' => 'required|unique:mahasiswas,nim',
             'nama' => 'required|string|max:50',
             'fakultas' => 'required|string|max:50',
             'jurusan' => 'required|string|max:50',
         ]);
         if(Mahasiswa::create($data)) {
-            return redirect()->back()->with('success', 'Data mahasiswa berhasil disimpan');
+            return redirect()->route('mahasiswa.index')->with('success', 'Data mahasiswa berhasil disimpan');
         }
         return redirect()->back()->with('error', 'Data mahasiswa gagal disimpan');
     }
@@ -64,14 +64,14 @@ class MahasiswaController extends Controller
     public function update(Request $request, string $id)
     {
         $data = $request->validate([
-            'nim' => 'required|size:10|unique:mahasiswas,nim,'.$id,
+            'nim' => 'required|unique:mahasiswas,nim,'.$id,
             'nama' => 'required|string|max:50',
             'fakultas' => 'required|string|max:50',
             'jurusan' => 'required|string|max:50',
         ]);
         $mahasiswa = Mahasiswa::findOrFail($id);
         if($mahasiswa->update($data)) {
-            return redirect()->back()->with('success', 'Data mahasiswa berhasil diubah');
+            return redirect()->route('mahasiswa.index')->with('success', 'Data mahasiswa berhasil diubah');
         }
         return redirect()->back()->with('error', 'Data mahasiswa gagal diubah');
     }
